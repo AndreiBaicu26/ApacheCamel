@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+</head>
+<body>
+    <div style="width: 100vw; height: 100vh; display: flex; align-items:center; justify-content:center; flex-direction:column;">
+        <input id="countryInput" type="text" style="margin-bottom: 16px;">
+        <button id="mainButton">
+            Check holiday
+        </button>
+        <span style="margin-top: 16px;" id="result">
+
+        </span>
+    </div>
+</body>
+<footer>
+    <script>
+        var months = {
+            '01' : 'January',
+            '02' : 'February',
+            '03' : 'March',
+            '04' : 'April',
+            '05' : 'May',
+            '06' : 'June',
+            '07' : 'July',
+            '08' : 'August',
+            '09' : 'September',
+            '10' : 'October',
+            '11' : 'November',
+            '12' : 'December',
+
+        }
+        document.getElementById("mainButton").addEventListener('click', () => {
+            var countryCode = document.getElementById("countryInput").value;
+            fetch(`http://localhost:8080/holidays/${countryCode}`,
+             ).then((result) => result.json())
+             .then(response => {
+                var textToShow = `${countryCode} has <strong> ${response.totalHolidays} </strong> vacation days in 
+                2022 and the month with most vacation days is <strong>${months[response.holidayMonth]}</strong>`;
+                document.getElementById('result').innerHTML = textToShow;
+             }).catch(err => {
+                var textToShow = `Could not get your data.`;
+                document.getElementById('result').innerHTML = textToShow;
+             })
+     
+        });
+    </script>
+</footer>
+</html>
